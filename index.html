@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Github Cards</title>
+    
+    <link rel="stylesheet" href="css/base.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      
+    var Card = React.createClass({
+      getInitialState: function() {
+        return {};
+      },
+      componentDidMount: function() {
+        var component = this;
+        $.get("https://api.github.com/users/" + this.props.login, function(data) {
+          component.setState(data);
+        });
+      },
+      render: function() {
+        return (
+          <div>
+            <img src={this.state.avatar_url} width="80" />
+            <h3>{this.state.login}</h3>
+            <hr/>
+          </div>
+        );
+      }
+    });
+
+
+
+      var Main = React.createClass({
+        getInitialState : function() {
+          return {
+            logins: ['jmsevold','mattkc7']
+          };
+        },
+
+
+        render: function() {
+          var cards = this.state.logins.map(function(login) {
+            return (<Card login={login} />);
+          });
+
+          return (
+            <div>
+              {cards}
+            </div>
+          )
+        }
+      });
+
+      ReactDOM.render(<Main />,document.getElementById('root'));
+
+    </script> 
+  </body>
+</html>
